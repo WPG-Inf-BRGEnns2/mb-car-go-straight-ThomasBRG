@@ -1,13 +1,3 @@
-input.onLogoEvent(TouchButtonEvent.Pressed, function () {
-    stop()
-})
-function schneller () {
-    vor()
-    if (vr < 1023 && vl < 1023) {
-        vr += 128
-        vl += 128
-    }
-}
 function vor () {
     pins.digitalWritePin(DigitalPin.P0, 1)
     pins.digitalWritePin(DigitalPin.P1, 0)
@@ -21,6 +11,16 @@ function vor () {
         . . # . .
         `)
 }
+function schneller () {
+    vor()
+    if (vr < 1023 && vl < 1023) {
+        vr += 128
+        vl += 128
+    }
+}
+input.onButtonPressed(Button.B, function () {
+    schneller()
+})
 function stop () {
     pins.digitalWritePin(DigitalPin.P0, 0)
     pins.digitalWritePin(DigitalPin.P1, 0)
@@ -34,8 +34,8 @@ function stop () {
         . . . . .
         `)
 }
-input.onButtonPressed(Button.A, function () {
-    langsamer()
+input.onLogoEvent(TouchButtonEvent.Pressed, function () {
+    stop()
 })
 function zurück () {
     pins.digitalWritePin(DigitalPin.P0, 0)
@@ -64,9 +64,6 @@ radio.onReceivedString(function (receivedString) {
         langsamer()
     }
 })
-input.onButtonPressed(Button.B, function () {
-    schneller()
-})
 function langsamer () {
     if (vr < 383 || vl < 383) {
         stop()
@@ -75,6 +72,9 @@ function langsamer () {
         vl += -128
     }
 }
+input.onButtonPressed(Button.A, function () {
+    langsamer()
+})
 function schreibeGeschwindigkeit () {
     pins.analogWritePin(AnalogPin.P14, vr)
     pins.analogWritePin(AnalogPin.P13, vl)
